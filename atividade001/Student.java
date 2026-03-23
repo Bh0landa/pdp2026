@@ -59,10 +59,10 @@ public class Student {
         Double ap2 = (studentAp2 == null) ? 0.0 : studentAp2;
         
         return "Nome: " + studentName
-        + "| Matricula: " + studentRegistration
-        + "| Idade: " + studentAge
-        + "| Ap1: " + ap1
-        + "| Ap2: " + ap2
-        + "| Nota Final: " + getFinalGrade();
+        + " | Matricula: " + studentRegistration
+        + " | Idade: " + studentAge
+        + " | Ap1: " + ap1
+        + " | Ap2: " + ap2
+        + " | Nota Final: " + getFinalGrade();
     }
 }

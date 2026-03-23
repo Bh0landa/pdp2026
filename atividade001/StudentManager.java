@@ -21,9 +21,10 @@ public class StudentManager {
             String name = "";
             while (name.isBlank()) {
                 System.out.println("Nome: ");
-                name = scanner.nextLine();
+                name = scanner.nextLine().trim();
+
                 if (name.isBlank()) {
-                    s.setName(scanner.nextLine());
+                    System.out.println("Nome nao pode estar vazio.");
                 }
             }
             s.setName(name);
@@ -81,18 +82,44 @@ public class StudentManager {
     public void processGradeMenuChoice(Student s) {
         switch (option) {
             case 1 -> {
-                System.out.println("Nota Ap1: ");
-                double ap1 = scanner.nextDouble();
-                scanner.nextLine();
-                s.setAp1(ap1);
-                System.out.println("Nota da Ap1 Registrada: ");
+                while (true) {
+                    System.out.println("Nota Ap1: ");
+                    try {
+                        double ap1 = scanner.nextDouble();
+                        scanner.nextLine();
+
+                        if (ap1 < 0 || ap1 > 10) {
+                            System.out.println("Nota invalida. Digite entre 0 e 10.");
+                            continue;
+                        }
+                        s.setAp1(ap1);
+                        System.out.println("Nota da Ap1 Registrada: ");
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Entrada invalida. Digite um numero.");
+                        scanner.nextLine();
+                    }
+                }
             }
             case 2 -> {
-                System.out.println("Nota Ap2: ");
-                double ap2 = scanner.nextDouble();
-                scanner.nextLine();
-                s.setAp2(ap2);
-                System.out.println("Nota da Ap2 Registrada: ");
+                while (true) {
+                    System.out.println("Nota Ap2: ");
+                    try {
+                        double ap2 = scanner.nextDouble();
+                        scanner.nextLine();
+
+                        if (ap2 < 0 || ap2 > 10) {
+                            System.out.println("Nota invalida. Digite entre 0 e 10.");
+                            continue;
+                        }
+                        s.setAp1(ap2);
+                        System.out.println("Nota da Ap2 Registrada: ");
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Entrada invalida. Digite um numero.");
+                        scanner.nextLine();
+                    }
+                }
             }
             case 0 -> System.out.println("Saindo do registro de notas...");
             default -> System.out.println("Opcao invalida.");
