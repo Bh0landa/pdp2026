@@ -14,116 +14,40 @@ public class StudentManager {
     }
 
     public void addStudent() {
-        int option;
         do {
             Student s = new Student();
 
-            String name = "";
-            while (name.isBlank()) {
-                System.out.println("Nome: ");
-                name = scanner.nextLine().trim();
-
-                if (name.isBlank()) {
-                    System.out.println("Nome nao pode estar vazio.");
-                }
-            }
-            s.setName(name);
+            s.setName(readNmae());
 
             System.out.println("Matricula: ");
             s.setRegistration(scanner.nextLine());
 
-            int age = 0;
-            while (age <= 0) {
-                System.out.println("Idade: ");
-                try {
-                    age = scanner.nextInt();
-                    if (age <= 0) {
-                        System.out.println("Idade invalida");
-                    }
-                } catch (Exception e) {
-                    System.out.println("Digite um numero valido!");
-                    scanner.nextLine();
-                }
-            }
+            int age = readAge("Idade: ");
             s.setAge(age);
-            scanner.nextLine();
 
             students.add(s);
-            System.out.println("Aluno Cadastrado, Aperte 0 Para Sair");
-            option = scanner.nextInt();
-            scanner.nextLine();
+            option = readOption();
         } while (option != 0);
     }
 
-    public void gradeMenu() {
-        System.out.println("""
-                \s
-                =====REGISTRO DE NOTAS=====
-                |1. Ap1;                   |
-                |2. Ap2;                   |
-                |0. Sair;                  |
-                ===========================
-                """);
-    }
-
-    public void recordGrade() {
+    public void recordAp1() {
         Student s = findStudentByRegistration();
         if (s == null) {
             return;
         }
-        do {
-            gradeMenu();
-            option = scanner.nextInt();
-            scanner.nextLine();
-            processGradeMenuChoice(s);
-        } while (option != 0);
+        double ap1 = readGrade("Nota Ap1: ");
+        s.setAp1(ap1);
+        System.out.println("Nota Registrada");
     }
 
-    public void processGradeMenuChoice(Student s) {
-        switch (option) {
-            case 1 -> {
-                while (true) {
-                    System.out.println("Nota Ap1: ");
-                    try {
-                        double ap1 = scanner.nextDouble();
-                        scanner.nextLine();
-
-                        if (ap1 < 0 || ap1 > 10) {
-                            System.out.println("Nota invalida. Digite entre 0 e 10.");
-                            continue;
-                        }
-                        s.setAp1(ap1);
-                        System.out.println("Nota da Ap1 Registrada: ");
-                        break;
-                    } catch (Exception e) {
-                        System.out.println("Entrada invalida. Digite um numero.");
-                        scanner.nextLine();
-                    }
-                }
-            }
-            case 2 -> {
-                while (true) {
-                    System.out.println("Nota Ap2: ");
-                    try {
-                        double ap2 = scanner.nextDouble();
-                        scanner.nextLine();
-
-                        if (ap2 < 0 || ap2 > 10) {
-                            System.out.println("Nota invalida. Digite entre 0 e 10.");
-                            continue;
-                        }
-                        s.setAp1(ap2);
-                        System.out.println("Nota da Ap2 Registrada: ");
-                        break;
-                    } catch (Exception e) {
-                        System.out.println("Entrada invalida. Digite um numero.");
-                        scanner.nextLine();
-                    }
-                }
-            }
-            case 0 -> System.out.println("Saindo do registro de notas...");
-            default -> System.out.println("Opcao invalida.");
+    public void recordAp2() {
+        Student s = findStudentByRegistration();
+        if (s == null) {
+            return;
         }
+        double ap2 = readGrade("Nota Ap2: ");
+        s.setAp2(ap2);
+        System.out.println("Nota Registrada");
     }
 
     public void viewStudentData() {
@@ -171,5 +95,74 @@ public class StudentManager {
 
         System.out.println("Aluno Não Encontrado");
         return null;
+    }
+
+    private String readNmae() {
+        while (true) {
+            System.out.println("Nome: ");
+            String name = scanner.nextLine().trim().replaceAll("\\s+", " ");
+
+            if (name.isBlank()) {
+                System.out.println("Nome nao pode estar vazio.");
+                continue;
+            }
+
+            if (!name.matches("^[\\p{L}]+(?: [\\p{L}]+)*$")) {
+                System.out.println("Nome invalido. Use apenas letras e espacos.");
+                continue;
+            }
+            return name;
+        }
+    }
+
+    private int readAge(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            try {
+                int value = scanner.nextInt();
+                scanner.nextLine();
+
+                if (value < 0) {
+                    System.out.println("Idade Invalida.");
+                }
+                return value;
+            } catch (Exception e) {
+                System.out.println("Digite um numero valido!");
+                scanner.nextLine();
+            }
+        }
+    }
+
+    private int readOption() {
+        while (true) {
+            System.out.println("Aluno Cadastrado, Aperte 0 Para Sair, Digite Qualquer Numero Para Continuar");
+            try {
+                int value = scanner.nextInt();
+                scanner.nextLine();
+                return value;
+            } catch (Exception e) {
+                System.out.println("Entrada Invlida.");
+                scanner.nextLine();
+            }
+        }
+    }
+
+    private double readGrade(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            try {
+                double value = scanner.nextDouble();
+                scanner.nextLine();
+                
+                if (value < 0 || value > 10) {
+                    System.out.println("Nota invalida. Digite entre 0 e 10.");
+                    continue;
+                }
+                return value;
+            } catch (Exception e) {
+                System.out.println("Entrada invalida. Digite um numero.");
+                scanner.nextLine();
+            }
+        }
     }
 }

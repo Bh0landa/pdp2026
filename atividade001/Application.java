@@ -21,15 +21,33 @@ public class Application {
                 """);
     }
 
+    public void gradeMenu() {
+        System.out.println("""
+                \s
+                =====REGISTRO DE NOTAS=====
+                |1. Ap1;                   |
+                |2. Ap2;                   |
+                |0. Sair;                  |
+                ===========================
+                """);
+    }
+
     public void mainMenuDisplay() {
         do {
             mainMenu();
-            option = scanner.nextInt();
-            scanner.nextLine();
+            option = readMenuOption();
             processMainMenuChoice();
         } while (option != 0);
         
         scanner.close();
+    }
+
+    public void gradeMenuDisplay() {
+        do {
+            gradeMenu();
+            option = readMenuOption();
+            processGradeMenuChoice();
+        } while (option != 0);
     }
 
     public void processMainMenuChoice() {
@@ -38,7 +56,7 @@ public class Application {
                 manager.addStudent();
             }
             case 2 -> {
-                manager.recordGrade();
+                gradeMenuDisplay();
             }
             case 3 -> {
                 manager.viewStudentData();
@@ -48,6 +66,32 @@ public class Application {
             }
             case 0 ->System.out.println("Saindo.........");
             default -> System.out.println("Comando inválido");
+        }
+    }
+
+    public void processGradeMenuChoice() {
+        switch (option) {
+            case 1 -> {
+                manager.recordAp1();
+            }
+            case 2 -> {
+                manager.recordAp2();
+            }
+            case 0 -> System.out.println("Saindo do registro de notas...");
+            default -> System.out.println("Opcao invalida.");
+        }
+    }
+
+    private int readMenuOption() {
+        while (true) {
+            try{
+                int value = scanner.nextInt();
+                scanner.nextLine();
+                return value;
+            } catch (Exception e) {
+                System.out.println("Entrada Invlida.");
+                scanner.nextLine();
+            }
         }
     }
 }
