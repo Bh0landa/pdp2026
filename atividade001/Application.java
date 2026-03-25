@@ -89,7 +89,7 @@ public class Application {
                 scanner.nextLine();
                 return value;
             } catch (Exception e) {
-                System.out.println("Entrada Invalida.");
+                System.out.println("Entrada Inválida.");
                 scanner.nextLine();
             }
         }

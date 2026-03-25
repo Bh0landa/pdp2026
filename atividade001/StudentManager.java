@@ -36,7 +36,7 @@ public class StudentManager {
         }
         double ap1 = readGrade("Nota Ap1: ");
         s.setAp1(ap1);
-        System.out.println("Nota Ap1 Registrada" + String.format("%2.f", ap1));
+        System.out.println("Nota Ap1 Registrada: " + String.format("%.2f", ap1));
     }
 
     public void recordAp2() {
@@ -46,7 +46,7 @@ public class StudentManager {
         }
         double ap2 = readGrade("Nota Ap2: ");
         s.setAp2(ap2);
-        System.out.println("Nota Ap2Registrada " + String.format("%2.f", ap2));
+        System.out.println("Nota Ap2 Registrada: " + String.format("%.2f", ap2));
     }
 
     public void viewStudentData() {
@@ -74,7 +74,7 @@ public class StudentManager {
         }
 
         double average = sum / students.size();
-        System.out.println("Media da turma: " + String.format("%2.f", average));
+        System.out.println("Media da turma: " + String.format("%.2f", average));
     }
 
     private Student findStudentByRegistration() {
@@ -83,8 +83,13 @@ public class StudentManager {
             return null;
         }
         while (true) {
-            System.out.println("Informe a Matricula: ");
+            System.out.println("Informe a Matricula ou aperte 0 para sair: ");
             String registration = normalizeRegistration(scanner.nextLine());
+
+            if (registration.equals("0")) {
+                System.out.println("Operacão Cancelada");
+                return null;
+            }
 
             if (registration.isEmpty()) {
                 System.out.println("Matricula não pode estar vazia.");
@@ -112,7 +117,7 @@ public class StudentManager {
             }
 
             if (!name.matches("^[\\p{L}]+(?: [\\p{L}]+)*$")) {
-                System.out.println("Nome invalido. Use apenas letras e espacos.");
+                System.out.println("Nome inválido. Use apenas letras e espacos.");
                 continue;
             }
             return name.toUpperCase(java.util.Locale.ROOT);
@@ -134,7 +139,7 @@ public class StudentManager {
             }
 
             if (!registration.matches("^[A-Za-z0-9]+$")) {
-                System.out.println("Matricula invalida. Use apenas letras e numeros.");
+                System.out.println("Matricula inválida. Use apenas letras e numeros.");
                 continue;
             }
             if (isRegistrationTaken(registration)) {
@@ -161,13 +166,13 @@ public class StudentManager {
                 int value = scanner.nextInt();
                 scanner.nextLine();
 
-                if (value <= 0) {
-                    System.out.println("Idade Invalida.");
+                if (value <= 15) {
+                    System.out.println("Idade Inválida.");
                     continue;
                 }
                 return value;
             } catch (Exception e) {
-                System.out.println("Digite um numero valido!");
+                System.out.println("Digite um numero válido!");
                 scanner.nextLine();
             }
         }
@@ -183,9 +188,9 @@ public class StudentManager {
                 if (value == 0 || value == 1) {
                     return value;
                 }
-                System.out.println("Opcao invalida. Use apenas 0 ou 1.");
+                System.out.println("Opcao inválida. Use apenas 0 ou 1.");
             } catch (Exception e) {
-                System.out.println("Entrada Invalida. Digite um numero");
+                System.out.println("Entrada Inválida. Digite um numero");
                 scanner.nextLine();
             }
         }
@@ -199,12 +204,12 @@ public class StudentManager {
                 scanner.nextLine();
 
                 if (value < 0 || value > 10) {
-                    System.out.println("Nota invalida. Digite entre 0 e 10.");
+                    System.out.println("Nota inválida. Digite entre 0 e 10.");
                     continue;
                 }
                 return value;
             } catch (Exception e) {
-                System.out.println("Entrada invalida. Digite um numero.");
+                System.out.println("Entrada inválida. Digite um numero.");
                 scanner.nextLine();
             }
         }
