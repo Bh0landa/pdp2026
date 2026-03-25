@@ -17,16 +17,15 @@ public class StudentManager {
         do {
             Student s = new Student();
 
-            s.setName(readNmae());
+            s.setName(readName("Nome: "));
 
-            System.out.println("Matricula: ");
-            s.setRegistration(scanner.nextLine());
+            s.setRegistration(readRegistration("Matricula: "));
 
             int age = readAge("Idade: ");
             s.setAge(age);
 
             students.add(s);
-            option = readOption();
+            option = readMenuOption();
         } while (option != 0);
     }
 
@@ -37,7 +36,7 @@ public class StudentManager {
         }
         double ap1 = readGrade("Nota Ap1: ");
         s.setAp1(ap1);
-        System.out.println("Nota Registrada");
+        System.out.println("Nota Ap1 Registrada" + String.format("%2.f", ap1));
     }
 
     public void recordAp2() {
@@ -47,7 +46,7 @@ public class StudentManager {
         }
         double ap2 = readGrade("Nota Ap2: ");
         s.setAp2(ap2);
-        System.out.println("Nota Registrada");
+        System.out.println("Nota Ap2Registrada " + String.format("%2.f", ap2));
     }
 
     public void viewStudentData() {
@@ -75,7 +74,7 @@ public class StudentManager {
         }
 
         double average = sum / students.size();
-        System.out.println("Media da turma: " + average);
+        System.out.println("Media da turma: " + String.format("%2.f", average));
     }
 
     private Student findStudentByRegistration() {
@@ -83,27 +82,32 @@ public class StudentManager {
             System.out.println("Nenhum Aluno Cadastrado.");
             return null;
         }
+        while (true) {
+            System.out.println("Informe a Matricula: ");
+            String registration = normalizeRegistration(scanner.nextLine());
 
-        System.out.println("Informe a Matricula: ");
-        String registration = scanner.nextLine();
-
-        for (Student s : students) {
-            if (s.getRegistration().equalsIgnoreCase(registration)) {
-                return s;
+            if (registration.isEmpty()) {
+                System.out.println("Matricula não pode estar vazia.");
+                continue;
             }
-        }
 
-        System.out.println("Aluno Não Encontrado");
-        return null;
+            for (Student s : students) {
+                if (s.getRegistration().equalsIgnoreCase(registration)) {
+                    return s;
+                }
+            }
+
+            System.out.println("Aluno Não Encontrado");
+        }
     }
 
-    private String readNmae() {
+    private String readName(String prompt) {
         while (true) {
-            System.out.println("Nome: ");
+            System.out.println(prompt);
             String name = scanner.nextLine().trim().replaceAll("\\s+", " ");
 
             if (name.isBlank()) {
-                System.out.println("Nome nao pode estar vazio.");
+                System.out.println("Nome não pode estar vazio.");
                 continue;
             }
 
@@ -111,8 +115,43 @@ public class StudentManager {
                 System.out.println("Nome invalido. Use apenas letras e espacos.");
                 continue;
             }
-            return name;
+            return name.toUpperCase(java.util.Locale.ROOT);
         }
+    }
+
+    private String normalizeRegistration(String raw) {
+        return raw.replaceAll("\\s+", "").toUpperCase(java.util.Locale.ROOT);
+    }
+
+    private String readRegistration(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            String registration = normalizeRegistration(scanner.nextLine());
+
+            if (registration.isBlank()) {
+                System.out.println("Matricula não pode estar vazia.");
+                continue;
+            }
+
+            if (!registration.matches("^[A-Za-z0-9]+$")) {
+                System.out.println("Matricula invalida. Use apenas letras e numeros.");
+                continue;
+            }
+            if (isRegistrationTaken(registration)) {
+                System.out.println("Matricula ja registrada");
+                continue;
+            }
+            return registration.toUpperCase(java.util.Locale.ROOT);
+        }
+    }
+
+    private boolean isRegistrationTaken(String registration) {
+        for (Student s : students) {
+            if (s.getRegistration().equalsIgnoreCase(registration)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int readAge(String prompt) {
@@ -122,8 +161,9 @@ public class StudentManager {
                 int value = scanner.nextInt();
                 scanner.nextLine();
 
-                if (value < 0) {
+                if (value <= 0) {
                     System.out.println("Idade Invalida.");
+                    continue;
                 }
                 return value;
             } catch (Exception e) {
@@ -133,15 +173,19 @@ public class StudentManager {
         }
     }
 
-    private int readOption() {
+    private int readMenuOption() {
         while (true) {
-            System.out.println("Aluno Cadastrado, Aperte 0 Para Sair, Digite Qualquer Numero Para Continuar");
+            System.out.println("Aluno Cadastrado. Digite 1 para continuar ou 0 para sair:");
             try {
                 int value = scanner.nextInt();
                 scanner.nextLine();
-                return value;
+
+                if (value == 0 || value == 1) {
+                    return value;
+                }
+                System.out.println("Opcao invalida. Use apenas 0 ou 1.");
             } catch (Exception e) {
-                System.out.println("Entrada Invlida.");
+                System.out.println("Entrada Invalida. Digite um numero");
                 scanner.nextLine();
             }
         }
@@ -153,7 +197,7 @@ public class StudentManager {
             try {
                 double value = scanner.nextDouble();
                 scanner.nextLine();
-                
+
                 if (value < 0 || value > 10) {
                     System.out.println("Nota invalida. Digite entre 0 e 10.");
                     continue;

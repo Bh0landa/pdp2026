@@ -15,7 +15,7 @@ public class Application {
                 |1. Adicionar Aluno;         |
                 |2. Registrar Nota;          |
                 |3. Ver Dados dos Alunos;    |
-                |4. Meddia da Turma;         |
+                |4. Media da Turma;          |
                 |0. Sair;                    |
                 ------------------------------
                 """);
@@ -64,7 +64,7 @@ public class Application {
             case 4 -> {
                 manager.calculateClassAverage();
             }
-            case 0 ->System.out.println("Saindo.........");
+            case 0 -> System.out.println("Saindo.........");
             default -> System.out.println("Comando inválido");
         }
     }
@@ -78,7 +78,7 @@ public class Application {
                 manager.recordAp2();
             }
             case 0 -> System.out.println("Saindo do registro de notas...");
-            default -> System.out.println("Opcao invalida.");
+            default -> System.out.println("Comando inválido");
         }
     }
 
@@ -89,7 +89,7 @@ public class Application {
                 scanner.nextLine();
                 return value;
             } catch (Exception e) {
-                System.out.println("Entrada Invlida.");
+                System.out.println("Entrada Invalida.");
                 scanner.nextLine();
             }
         }

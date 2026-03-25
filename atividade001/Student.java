@@ -40,29 +40,25 @@ public class Student {
     }
 
     public Double getAp1() {
-        return studentAp1;
+        return (studentAp1 == null) ? 0.0 : studentAp1;
     }
 
     public Double getAp2() {
-        return studentAp2;
+        return (studentAp2 == null) ? 0.0 : studentAp2;
     }
 
     public Double getFinalGrade() {
-        Double ap1 = (studentAp1 == null) ? 0.0 : studentAp1;
-        Double ap2 = (studentAp2 == null) ? 0.0 : studentAp2;
-        return (ap1 + ap2) / 2.0;
+        return (getAp1() + getAp2()) / 2.0;
     }
 
     @Override
     public String toString() {
-        Double ap1 = (studentAp1 == null) ? 0.0 : studentAp1;
-        Double ap2 = (studentAp2 == null) ? 0.0 : studentAp2;
         
-        return "Nome: " + studentName
-        + " | Matricula: " + studentRegistration
-        + " | Idade: " + studentAge
-        + " | Ap1: " + ap1
-        + " | Ap2: " + ap2
-        + " | Nota Final: " + getFinalGrade();
+        return "Nome: " + getName()
+        + " | Matricula: " + getRegistration()
+        + " | Idade: " + getAge()
+        + " | Ap1: " + String.format("%.2f", getAp1())
+        + " | Ap2: " + String.format("%.2f", getAp2())
+        + " | Nota Final: " + String.format("%.2f", getFinalGrade());
     }
 }
