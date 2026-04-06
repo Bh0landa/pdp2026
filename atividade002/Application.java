@@ -15,12 +15,13 @@ public class Application {
                 |1. Cadastrar Aluno;          |
                 |2. Cadastrar Professor;      |
                 |3. Cadastrar Disciplina;     |
-                |4. Vincular Aluno;           |
-                |5. Listar Disciplinas Aluno; |
-                |6. Listar Disciplinas Prof.; |
-                |7. Remover Disc. do Aluno;   |
-                |8. Remover Disc. do Prof.;   |
-                |9. Buscar Disciplina;        |
+                |4. Vincular Professor;       |
+                |5. Vincular Aluno;           |
+                |6. Listar Disciplinas Aluno; |
+                |7. Listar Disciplinas Prof;  |
+                |8. Remover Disc. do Aluno;   |
+                |9. Remover Disc. do Prof;    |
+                |10. Buscar Disciplina;       |
                 |0. Sair;                     |
                 -------------------------------
                 """);
@@ -41,12 +42,13 @@ public class Application {
             case 1 -> manager.addStudent();
             case 2 -> manager.addProfessor();
             case 3 -> manager.addDiscipline();
-            case 4 -> manager.linkStudentToDiscipline();
-            case 5 -> manager.listStudentDisciplines();
-            case 6 -> manager.listProfessorDisciplines();
-            case 7 -> manager.removeDisciplineFromStudent();
-            case 8 -> manager.removeDisciplineFromProfessor();
-            case 9 -> manager.searchDisciplineForStudent();
+            case 4 -> manager.linkProfessorToDiscipline();
+            case 5 -> manager.linkStudentToDiscipline();
+            case 6 -> manager.listStudentDisciplines();
+            case 7 -> manager.listProfessorDisciplines();
+            case 8 -> manager.removeDisciplineFromStudent();
+            case 9 -> manager.removeDisciplineFromProfessor();
+            case 10 -> manager.searchDisciplineForStudent();
             case 0 -> System.out.println("Saindo.........");
             default -> System.out.println("Comando inválido");
         }

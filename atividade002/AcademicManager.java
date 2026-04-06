@@ -31,37 +31,38 @@ public class AcademicManager {
     }
 
     public void addDiscipline() {
-        if (professors.isEmpty()) {
-            System.out.println("Cadastre pelo menos um professor antes de criar a disciplina.");
-            return;
-        }
-
-        if (students.isEmpty()) {
-            System.out.println("Cadastre pelo menos um aluno antes de criar a disciplina.");
-            return;
-        }
-
         Discipline discipline = new Discipline();
         discipline.setName(readName("Nome da disciplina: "));
         discipline.setCode(readUniqueKey("Codigo da disciplina: ", disciplines));
+
+        disciplines.put(discipline.getCode(), discipline);
+        System.out.println("Disciplina cadastrada com sucesso.");
+    }
+
+    public void linkProfessorToDiscipline() {
+        Discipline discipline = findDisciplineByCode();
+        if (discipline == null) {
+            return;
+        }
 
         Professor professor = findProfessorByRegistration();
         if (professor == null) {
             return;
         }
 
-        discipline.setProfessor(professor);
-        professor.addDiscipline(discipline);
-
-        if (!addStudentsToDiscipline(discipline)) {
-            professor.removeDiscipline(discipline);
-            discipline.setProfessor(null);
-            System.out.println("Disciplina cancelada sem alunos vinculados.");
+        Professor previousProfessor = discipline.getProfessor();
+        if (previousProfessor == professor) {
+            System.out.println("Este professor ja esta vinculado a disciplina.");
             return;
         }
 
-        disciplines.put(discipline.getCode(), discipline);
-        System.out.println("Disciplina cadastrada com sucesso.");
+        if (previousProfessor != null) {
+            previousProfessor.removeDiscipline(discipline);
+        }
+
+        discipline.setProfessor(professor);
+        professor.addDiscipline(discipline);
+        System.out.println("Professor vinculado a disciplina com sucesso.");
     }
 
     public void linkStudentToDiscipline() {
@@ -162,31 +163,6 @@ public class AcademicManager {
 
         System.out.println("=== INFORMAÇÕES DA DISCIPLINA ===");
         System.out.println(discipline.getDetailedInfo());
-    }
-
-    private boolean addStudentsToDiscipline(Discipline discipline) {
-        boolean addedAnyStudent = false;
-
-        while (true) {
-            Student student = findStudentByRegistration();
-            if (student == null) {
-                return addedAnyStudent;
-            }
-
-            if (discipline.addStudent(student)) {
-                student.addDiscipline(discipline);
-                addedAnyStudent = true;
-            } else {
-                System.out.println("Este aluno ja esta vinculado a disciplina.");
-            }
-
-            int moreStudents = readYesNo("Adicionar outro aluno nesta disciplina? (1-sim / 0-nao): ");
-            if (moreStudents == 0) {
-                break;
-            }
-        }
-
-        return addedAnyStudent;
     }
 
     private Student findStudentByRegistration() {
@@ -360,24 +336,5 @@ public class AcademicManager {
 
     private String normalizeCode(String raw) {
         return raw.replaceAll("\\s+", "").toUpperCase(java.util.Locale.ROOT);
-    }
-
-    private int readYesNo(String prompt) {
-        while (true) {
-            System.out.println(prompt);
-            try {
-                int value = scanner.nextInt();
-                scanner.nextLine();
-
-                if (value == 0 || value == 1) {
-                    return value;
-                }
-
-                System.out.println("Opcao invalida. Use apenas 0 ou 1.");
-            } catch (Exception e) {
-                System.out.println("Entrada invalida. Digite um numero.");
-                scanner.nextLine();
-            }
-        }
     }
 }
